@@ -3,7 +3,9 @@ package com.ap.portfolio.controllers;
 import com.ap.portfolio.dtos.MockUserDTO;
 import com.ap.portfolio.models.MockUser;
 import com.ap.portfolio.services.MockUserService;
+import com.ap.portfolio.utilities.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,8 @@ public class IUserController {
     }
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("create-mock-user")
-    public String createMockUser(@RequestBody MockUserDTO mockUser){
+    public ResponseEntity<?> createMockUser(@RequestBody MockUserDTO mockUser){
         this.webUserService.save(this.webUserService.createUser(mockUser));
-        return "User Saved";
+        return new ResponseEntity<>(new Message("User Saved"), HttpStatus.CREATED);
     }
 }

@@ -9,6 +9,7 @@ import com.ap.portfolio.security.roles.IUser;
 import com.ap.portfolio.security.roles.Role;
 import com.ap.portfolio.security.services.RoleService;
 import com.ap.portfolio.security.services.UserService;
+import com.ap.portfolio.utilities.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,13 +48,13 @@ public class AuthController {
     @PostMapping("register")
     public ResponseEntity<?> newUser (@Valid @RequestBody NewUser newUser, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new ResponseEntity<>("Invalid Credentials", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message("Invalid Credentials"), HttpStatus.BAD_REQUEST);
         }
         if(userService.existsByUsername(newUser.getUsername())){
-            return new ResponseEntity<>("User already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message("User already exists"), HttpStatus.BAD_REQUEST);
         }
         if(userService.existsByEmail(newUser.getEmail())){
-            return new ResponseEntity<>("Email already registered", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message("Email already registered"), HttpStatus.BAD_REQUEST);
         }
 
         IUser user = new IUser(newUser.getName(), newUser.getUsername(), newUser.getEmail(), passwordEncoder.encode(newUser.getPassword()));
@@ -69,13 +70,13 @@ public class AuthController {
 
         this.userService.save(user);
 
-        return new ResponseEntity<>("User saved", HttpStatus.CREATED);
+        return new ResponseEntity<>(new Message("User saved"), HttpStatus.CREATED);
     }
     @Transactional
     @PostMapping("login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginUser loginUser, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return new ResponseEntity<>("Invalid Credentials", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new Message("Invalid Credentials"), HttpStatus.BAD_REQUEST);
         }
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 loginUser.getUsername(), loginUser.getPassword()));

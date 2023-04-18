@@ -2,8 +2,10 @@ package com.ap.portfolio.utilities;
 
 import com.ap.portfolio.security.roles.MainUser;
 import com.ap.portfolio.security.roles.IUser;
+import com.ap.portfolio.security.services.UserService;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -30,5 +32,10 @@ public class Utils {
                 .collect(Collectors.toList());
 
         return new MainUser(user.getName(), user.getUsername(), user.getEmail(), user.getPwd(), authorities);
+    }
+
+    public static IUser getCurrentUser(UserService userService){
+        String authUserName = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userService.getByUsername(authUserName).get();
     }
 }

@@ -1,5 +1,7 @@
 package com.ap.portfolio.security.roles;
 
+import com.ap.portfolio.models.Experience;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,6 +29,9 @@ public class IUser {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name ="role_id"))
     private Set<Role> roles = new HashSet<>();
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Experience> experience;
 
     public IUser(String name, String username, String email, String pwd) {
         this.name = name;
