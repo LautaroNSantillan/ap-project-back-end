@@ -31,9 +31,8 @@ public class PortfolioApplication {
 		MockUser juan = new MockUser("Juan", "Perez", "jperez@email.com");
 
 		MockUser john = new MockUser("John", "Johnson", "jjohn@email.com");
-
-		//webUserRepository.save(john);
-		//webUserRepository.save(juan);
+		webUserRepository.save(john);
+		webUserRepository.save(juan);
 		};
 	}
 

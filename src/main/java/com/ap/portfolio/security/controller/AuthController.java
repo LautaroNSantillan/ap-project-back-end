@@ -88,6 +88,9 @@ public class AuthController {
 
         JwtDTO jwtDTO = new JwtDTO(jwt, userDetails.getUsername(), userDetails.getAuthorities());
 
+        Authentication authentication2 = SecurityContextHolder.getContext().getAuthentication();
+        System.out.print(authentication2.getName());
+
         return new ResponseEntity<>(jwtDTO, HttpStatus.OK);
     }
 }
