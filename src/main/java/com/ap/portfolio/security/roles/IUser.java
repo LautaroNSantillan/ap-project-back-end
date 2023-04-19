@@ -1,6 +1,7 @@
 package com.ap.portfolio.security.roles;
 
 import com.ap.portfolio.models.Experience;
+import com.ap.portfolio.models.Skill;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,9 @@ public class IUser {
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Experience> experience;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private Set<Skill> skills;
 
     public IUser(String name, String username, String email, String pwd) {
         this.name = name;
