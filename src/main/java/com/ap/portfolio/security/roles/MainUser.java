@@ -17,7 +17,6 @@ import java.util.Set;
 public class MainUser implements UserDetails {
     private String name;
     private String username;
-    private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 

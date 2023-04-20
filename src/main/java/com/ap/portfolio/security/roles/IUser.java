@@ -2,6 +2,7 @@ package com.ap.portfolio.security.roles;
 
 import com.ap.portfolio.models.Experience;
 import com.ap.portfolio.models.Skill;
+import com.ap.portfolio.models.WebUser;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,6 @@ public class IUser {
     @NotNull
     @Column(unique = true)
     private String username;
-    private String email;
     @NotNull
     private String pwd;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -36,11 +36,14 @@ public class IUser {
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Skill> skills;
+    @JsonIgnore
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "web_user_id")
+    private WebUser webUser;
 
-    public IUser(String name, String username, String email, String pwd) {
+    public IUser(String name, String username, String pwd) {
         this.name = name;
         this.username = username;
-        this.email = email;
         this.pwd = pwd;
     }
 }

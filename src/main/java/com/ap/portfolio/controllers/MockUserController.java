@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
-public class IUserController {
+@RequestMapping("/mock")
+public class MockUserController {
     @Autowired
     private MockUserService webUserService;
-
     @GetMapping("all-users")
     public List<MockUser> findAllWebUsers(){
         return this.webUserService.findAll();

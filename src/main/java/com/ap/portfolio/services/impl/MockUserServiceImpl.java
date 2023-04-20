@@ -2,7 +2,7 @@ package com.ap.portfolio.services.impl;
 
 import com.ap.portfolio.dtos.MockUserDTO;
 import com.ap.portfolio.models.MockUser;
-import com.ap.portfolio.repositories.WebUserRepository;
+import com.ap.portfolio.repositories.MockUserRepository;
 import com.ap.portfolio.services.MockUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Service
 public class MockUserServiceImpl implements MockUserService {
     @Autowired
-    private WebUserRepository webUserRepository;
+    private MockUserRepository webUserRepository;
 
     @Override
     public Optional<MockUser> findById(long id) {

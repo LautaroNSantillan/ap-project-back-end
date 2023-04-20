@@ -31,7 +31,7 @@ public class Utils {
                 .map(role -> new SimpleGrantedAuthority(role.getRoleName().name()))
                 .collect(Collectors.toList());
 
-        return new MainUser(user.getName(), user.getUsername(), user.getEmail(), user.getPwd(), authorities);
+        return new MainUser(user.getName(), user.getUsername(), user.getPwd(), authorities);
     }
 
     public static IUser getCurrentUser(UserService userService){
