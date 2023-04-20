@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/web-user")
+@CrossOrigin(origins = "https://portfoliotestfront.web.app")
 public class WebUserController {
     @Autowired
     private WebUserService webUserService;

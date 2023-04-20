@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/mock")
+@CrossOrigin(origins = "https://portfoliotestfront.web.app")
 public class MockUserController {
     @Autowired
     private MockUserService webUserService;
