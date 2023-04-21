@@ -56,4 +56,9 @@ public class ExperienceServiceImpl implements ExperienceService {
         return this.experienceRepository.existsByExpName(name);
     }
 
+    @Override
+    public List<Experience> findActiveEducationByUserId(int userId) {
+        return this.experienceRepository.findActiveEducationByUserId(userId);
+    }
+
 }

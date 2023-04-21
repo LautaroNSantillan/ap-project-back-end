@@ -1,6 +1,7 @@
 package com.ap.portfolio.services;
 
 import com.ap.portfolio.models.Experience;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,4 +15,5 @@ public interface ExperienceService {
     void disableExp(Experience exp);
     boolean existstById(int id);
     boolean existstByName(String name);
+    List<Experience> findActiveEducationByUserId(int userId);
 }

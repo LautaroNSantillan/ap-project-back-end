@@ -1,5 +1,6 @@
 package com.ap.portfolio.security.services;
 
+import com.ap.portfolio.models.WebUser;
 import com.ap.portfolio.security.dtos.NewUser;
 import com.ap.portfolio.security.enums.RoleName;
 import com.ap.portfolio.security.repositories.IUserRepository;
@@ -34,5 +35,8 @@ public class UserService {
     }
     public void save(IUser user){
         this.iUserRepository.save(user);
+    }
+    public WebUser findWebUserByUsername(String username){
+        return this.iUserRepository.findByUsername(username).get().getWebUser();
     }
 }

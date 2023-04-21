@@ -14,4 +14,5 @@ public interface EducationService {
     boolean existsById(int id);
     void save(Education education);
     void disable(Education education);
+    List<Education> findActiveEducationByUserId(int id);
 }

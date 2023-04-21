@@ -55,4 +55,9 @@ public class EducationServiceImpl implements EducationService {
         education.setActive(false);
         this.educationRepository.save(education);
     }
+
+    @Override
+    public List<Education> findActiveEducationByUserId(int id) {
+        return this.educationRepository.findActiveEducationByUserId(id);
+    }
 }

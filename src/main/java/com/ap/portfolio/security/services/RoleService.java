@@ -2,6 +2,7 @@ package com.ap.portfolio.security.services;
 
 import com.ap.portfolio.security.enums.RoleName;
 import com.ap.portfolio.security.repositories.IRoleRepository;
+import com.ap.portfolio.security.roles.IUser;
 import com.ap.portfolio.security.roles.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

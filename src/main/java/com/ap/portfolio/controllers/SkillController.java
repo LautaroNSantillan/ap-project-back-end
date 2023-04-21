@@ -39,6 +39,12 @@ public class SkillController {
         return new ResponseEntity<>(this.skillService.findById(id).get(), HttpStatus.OK);
     }
 
+    @GetMapping("active-skill-by-id/{id}")
+    public ResponseEntity<List<Skill>> activeSkillById(@PathVariable int id){
+        List<Skill> skillList = this.skillService.findActiveSkillByUserId(id);
+        return new ResponseEntity<>(skillList, HttpStatus.OK);
+    }
+
     @PostMapping("/create-skill")
     public ResponseEntity<?> createExp(@RequestBody SkillDTO skillDTO) {
         if (StringUtils.isBlank(skillDTO.getSkillName())) {
@@ -53,13 +59,14 @@ public class SkillController {
         if (skillDTO.getPercentage() > 100) {
             return new ResponseEntity<>(new Message("Percentage must be a number between 0 and 100"), HttpStatus.BAD_REQUEST);
         }
-        if (this.skillService.existsBySkillName(skillDTO.getSkillName())) {
+        if (this.skillService.existsBySkillName(skillDTO.getSkillName())
+                && this.skillService.findByUserAndSkillName(Utils.getCurrentUser(this.userService).getWebUser(),skillDTO.getSkillName())) {
             return new ResponseEntity<>(new Message("Skill already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        Skill skill = new Skill(skillDTO.getSkillName(), skillDTO.getPercentage(), Utils.getCurrentUser(this.userService));
+        Skill skill = new Skill(skillDTO.getSkillName(), skillDTO.getPercentage(), Utils.getCurrentUser(this.userService).getWebUser());
 
-        skill.setUser(Utils.getCurrentUser(this.userService));
+        skill.setUser(Utils.getCurrentUser(this.userService).getWebUser());
 
         this.skillService.save(skill);
 

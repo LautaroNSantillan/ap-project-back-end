@@ -19,7 +19,7 @@ public class Experience {
     private boolean active;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private IUser user;
+    private WebUser user;
 
     public Experience(String expName, String expDescription) {
         this.expName = expName;

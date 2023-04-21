@@ -1,7 +1,9 @@
 package com.ap.portfolio.controllers;
 
 import com.ap.portfolio.dtos.ExperienceDTO;
+import com.ap.portfolio.models.Education;
 import com.ap.portfolio.models.Experience;
+import com.ap.portfolio.models.WebUser;
 import com.ap.portfolio.security.roles.IUser;
 import com.ap.portfolio.security.services.UserService;
 import com.ap.portfolio.services.ExperienceService;
@@ -36,6 +38,11 @@ public class ExperienceController {
     public ResponseEntity<Experience> getExp(@PathVariable int id){
         return new ResponseEntity<>(this.experienceService.findById(id).get(), HttpStatus.OK) ;
     }
+    @GetMapping("active-exp-by-id/{id}")
+    public ResponseEntity<List<Experience>> activeExpById(@PathVariable int id){
+        List<Experience> expList = this.experienceService.findActiveEducationByUserId(id);
+        return new ResponseEntity<>(expList, HttpStatus.OK);
+    }
     @PostMapping("/create-exp")
     public ResponseEntity<?> createExp(@RequestBody ExperienceDTO experienceDTO){
         if(StringUtils.isBlank(experienceDTO.getExpName())){
@@ -52,7 +59,7 @@ public class ExperienceController {
 
         //hacer servicio
         String authUserName = SecurityContextHolder.getContext().getAuthentication().getName();
-        IUser user = this.userService.getByUsername(authUserName).get();
+        WebUser user = this.userService.getByUsername(authUserName).get().getWebUser();
 
         exp.setUser(user);
 
@@ -72,7 +79,8 @@ public class ExperienceController {
         if(StringUtils.isBlank(experienceDTO.getExpDescription())){
             return new ResponseEntity<>(new Message("Missing Experience Description"), HttpStatus.BAD_REQUEST);
         }
-        if(this.experienceService.existstByName(experienceDTO.getExpName()) && this.experienceService.findByName(experienceDTO.getExpName()).get().getId() !=id){
+        if(this.experienceService.existstByName(experienceDTO.getExpName())
+                && this.experienceService.findByName(experienceDTO.getExpName()).get().getId() ==id){
             return new ResponseEntity<>(new Message("Experience already exists"), HttpStatus.BAD_REQUEST);
         }
 

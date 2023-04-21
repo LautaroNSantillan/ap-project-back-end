@@ -2,9 +2,11 @@ package com.ap.portfolio.controllers;
 
 import com.ap.portfolio.dtos.EducationDTO;
 import com.ap.portfolio.models.Education;
+import com.ap.portfolio.models.WebUser;
 import com.ap.portfolio.security.roles.IUser;
 import com.ap.portfolio.security.services.UserService;
 import com.ap.portfolio.services.EducationService;
+import com.ap.portfolio.services.WebUserService;
 import com.ap.portfolio.utilities.Message;
 import com.ap.portfolio.utilities.Utils;
 import org.apache.commons.lang3.StringUtils;
@@ -23,9 +25,16 @@ public class EducationController {
     private EducationService educationService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private WebUserService webUserService;
     @GetMapping("active-edu")
     public ResponseEntity<List<Education>> activeEdu(){
         List<Education> educationList = this.educationService.activeEduList();
+        return new ResponseEntity<>(educationList, HttpStatus.OK);
+    }
+    @GetMapping("active-edu-by-id/{id}")
+    public ResponseEntity<List<Education>> activeEduById(@PathVariable int id){
+        List<Education> educationList = this.educationService.findActiveEducationByUserId(id);
         return new ResponseEntity<>(educationList, HttpStatus.OK);
     }
     @GetMapping("get-edu/{id}")
@@ -59,7 +68,7 @@ public class EducationController {
             return new ResponseEntity<>(new Message("Education already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        Education education = new Education(educationDTO.getEduName(), educationDTO.getEduDescription(), Utils.getCurrentUser(this.userService));
+        Education education = new Education(educationDTO.getEduName(), educationDTO.getEduDescription(), Utils.getCurrentUser(this.userService).getWebUser());
 
         this.educationService.save(education);
 

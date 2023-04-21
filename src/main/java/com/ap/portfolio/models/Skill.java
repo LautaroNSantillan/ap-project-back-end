@@ -18,9 +18,9 @@ public class Skill {
     private boolean active;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private IUser user;
+    private WebUser user;
 
-    public Skill(String skillName, double percentage, IUser user) {
+    public Skill(String skillName, double percentage, WebUser user) {
         this.skillName = skillName;
         this.percentage = percentage;
         this.user=user;

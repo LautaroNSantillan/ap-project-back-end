@@ -1,5 +1,7 @@
 package com.ap.portfolio.security.controller;
 
+import com.ap.portfolio.controllers.WebUserController;
+import com.ap.portfolio.dtos.WebUserDTO;
 import com.ap.portfolio.security.dtos.JwtDTO;
 import com.ap.portfolio.security.dtos.LoginUser;
 import com.ap.portfolio.security.dtos.NewUser;
@@ -9,6 +11,7 @@ import com.ap.portfolio.security.roles.IUser;
 import com.ap.portfolio.security.roles.Role;
 import com.ap.portfolio.security.services.RoleService;
 import com.ap.portfolio.security.services.UserService;
+import com.ap.portfolio.services.WebUserService;
 import com.ap.portfolio.utilities.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +45,8 @@ public class AuthController {
     private RoleService roleService;
     @Autowired
     private JWTProvider jwtProvider;
+    @Autowired
+    private WebUserService webUserService;
     @Transactional
     @PostMapping("register")
     public ResponseEntity<?> newUser (@Valid @RequestBody NewUser newUser, BindingResult bindingResult){

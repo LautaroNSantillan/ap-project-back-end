@@ -1,6 +1,7 @@
 package com.ap.portfolio.services.impl;
 
 import com.ap.portfolio.models.Skill;
+import com.ap.portfolio.models.WebUser;
 import com.ap.portfolio.repositories.SkillsRepository;
 import com.ap.portfolio.services.SkillService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,16 @@ public class SkillServiceImpl implements SkillService {
         Skill skill=this.skillsRepository.findById(id).get();
         skill.setActive(false);
         this.skillsRepository.save(skill);
+    }
+
+    @Override
+    public List<Skill> findActiveSkillByUserId(int userId) {
+        return this.skillsRepository.findActiveSkillByUserId(userId);
+    }
+
+    @Override
+    public boolean findByUserAndSkillName(WebUser user, String skillName) {
+        Skill skill = this.skillsRepository.findByUserAndSkillName(user, skillName);
+        return skill != null;
     }
 }

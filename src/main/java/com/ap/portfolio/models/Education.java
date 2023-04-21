@@ -17,9 +17,9 @@ public class Education {
     private boolean active;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private IUser user;
+    private WebUser user;
 
-    public Education(String eduName, String eduDescription,IUser user) {
+    public Education(String eduName, String eduDescription,WebUser user) {
         this.eduName = eduName;
         this.eduDescription = eduDescription;
         this.active = true;

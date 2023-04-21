@@ -11,6 +11,7 @@ import com.ap.portfolio.security.dtos.NewUser;
 import com.ap.portfolio.security.services.UserService;
 import com.ap.portfolio.services.WebUserService;
 import com.ap.portfolio.utilities.Message;
+import com.ap.portfolio.utilities.Utils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -40,6 +42,10 @@ public class WebUserController {
         }
         WebUserDTO webUserDTO = new WebUserDTO((this.webUserService.getById(id).get()));
         return new ResponseEntity<>(webUserDTO, HttpStatus.OK);
+    }
+    @GetMapping("get-current-user-id")
+    public ResponseEntity<Integer> getUserId(){
+        return new ResponseEntity<>(Utils.getCurrentUser(this.userService).getWebUser().getId(), HttpStatus.OK);
     }
 
     @PostMapping("create-web-user")
@@ -82,26 +88,26 @@ public class WebUserController {
 
         WebUser webUser = this.webUserService.getById(id).get();
 
-        if(!StringUtils.isBlank(webUserDTO.getName())){
+        if(!StringUtils.isBlank(webUserDTO.getName())&& !Objects.equals(webUser.getName(),(webUserDTO.getName()))){
             webUser.setName(webUserDTO.getName());
             sb.append("name, ");
         }
-        if(!StringUtils.isBlank(webUserDTO.getLastName())){
-            webUser.setName(webUserDTO.getLastName());
+        if(!StringUtils.isBlank(webUserDTO.getLastName())&& !Objects.equals(webUser.getLastName(),(webUserDTO.getLastName()))){
+            webUser.setLastName(webUserDTO.getLastName());
             sb.append("last name, ");
         }
-        if(!StringUtils.isBlank(webUserDTO.getEmail())){
+        if(!StringUtils.isBlank(webUserDTO.getEmail()) && !Objects.equals(webUser.getEmail(),(webUserDTO.getEmail()))){
             if(this.webUserService.existsByEmail(webUserDTO.getEmail())){
                 return new ResponseEntity<>(new Message("Email already in use"), HttpStatus.BAD_REQUEST);
             }
             webUser.setName(webUserDTO.getEmail());
             sb.append("email, ");
         }
-        if(!StringUtils.isBlank(webUserDTO.getImg())){
-            webUser.setName(webUserDTO.getImg());
+        if(!StringUtils.isBlank(webUserDTO.getImg())&& !Objects.equals(webUser.getImg(), webUserDTO.getImg())){
+            webUser.setImg(webUserDTO.getImg());
             sb.append("image, ");
         }
-        if(!StringUtils.isBlank(webUserDTO.getAbout())){
+        if(!StringUtils.isBlank(webUserDTO.getAbout())&& !Objects.equals(webUser.getAbout(),(webUserDTO.getAbout()))){
             webUser.setAbout(webUserDTO.getAbout());
             sb.append("about, ");
         }
@@ -111,5 +117,10 @@ public class WebUserController {
         this.webUserService.save(webUser);
 
         return new ResponseEntity<>(new Message(sb.toString()), HttpStatus.OK);
+    }
+    @GetMapping("current-web-user")
+    public ResponseEntity<?> getCurrentUser(){
+        WebUserDTO webUserDTO = new WebUserDTO(this.userService.findWebUserByUsername(Utils.getCurrentUser(this.userService).getUsername()));
+        return new ResponseEntity<>(webUserDTO, HttpStatus.OK);
     }
 }
