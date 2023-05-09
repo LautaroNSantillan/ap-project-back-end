@@ -9,6 +9,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
+import java.io.FileInputStream;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,17 +27,17 @@ public class PortfolioApplication {
 		return (args) -> {
 
 
-		Calendar cal = Calendar.getInstance();
+			Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, 1988);
 		cal.set(Calendar.MONTH, Calendar.JANUARY);
 		cal.set(Calendar.DAY_OF_MONTH, 1);
 		Date dateRepresentation = cal.getTime();
 
-		MockUser juan = new MockUser("Juan", "Perez", "jperez@email.com");
+		MockUser juan = new MockUser("Juan", "Perez",  LocalDate.now());
 
-		MockUser john = new MockUser("John", "Johnson", "jjohn@email.com");
-		webUserRepository.save(john);
-		webUserRepository.save(juan);
+		MockUser john = new MockUser("John", "Johnson", LocalDate.now());
+//		webUserRepository.save(john);
+//		webUserRepository.save(juan);
 		};
 	}
 

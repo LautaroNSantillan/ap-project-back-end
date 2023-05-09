@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface WebUserRepository extends JpaRepository<WebUser, Integer> {
     Optional<WebUser> findByName(String name);
+    Optional<WebUser> findByEmail(String email);
     boolean existsByName(String name);
     boolean existsByEmail(String email);
 }

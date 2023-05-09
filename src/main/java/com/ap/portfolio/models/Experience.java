@@ -16,14 +16,16 @@ public class Experience {
     private int id;
     private String expName;
     private String expDescription;
+    private String imgURL;
     private boolean active;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private WebUser user;
 
-    public Experience(String expName, String expDescription) {
+    public Experience(String expName, String expDescription, String imgURL) {
         this.expName = expName;
         this.expDescription = expDescription;
+        this.imgURL=imgURL;
         this.setActive(true);
     }
 }

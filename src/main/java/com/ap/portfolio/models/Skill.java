@@ -15,15 +15,17 @@ public class Skill {
     private int id;
     private String skillName;
     private double percentage;
+    private String imgURL;
     private boolean active;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private WebUser user;
 
-    public Skill(String skillName, double percentage, WebUser user) {
+    public Skill(String skillName, double percentage, String imgURL, WebUser user) {
         this.skillName = skillName;
         this.percentage = percentage;
         this.user=user;
         this.active=true;
+        this.imgURL= imgURL;
     }
 }

@@ -15,14 +15,16 @@ public class Education {
     private String eduName;
     private String eduDescription;
     private boolean active;
+    private String imgURL;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private WebUser user;
 
-    public Education(String eduName, String eduDescription,WebUser user) {
+    public Education(String eduName, String eduDescription,WebUser user, String imgURL) {
         this.eduName = eduName;
         this.eduDescription = eduDescription;
         this.active = true;
         this.user = user;
+        this.imgURL=imgURL;
     }
 }

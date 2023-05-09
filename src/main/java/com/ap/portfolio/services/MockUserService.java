@@ -11,9 +11,9 @@ public interface MockUserService {
     List<MockUser> findAll();
     Optional<MockUser> findById(long id);
     ResponseEntity<?> findByIdDTO(long id);
-    Optional<MockUser> findByEmail(String email);
     ResponseEntity<?> disableUser(long id);
     MockUser createUser(MockUserDTO mockUserDTO);
     ResponseEntity<?> register(MockUser user);
     void save(MockUser mockUser);
+    void delete(MockUser mockUser);
 }

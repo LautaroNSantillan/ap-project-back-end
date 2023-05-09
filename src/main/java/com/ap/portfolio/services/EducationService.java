@@ -15,4 +15,5 @@ public interface EducationService {
     void save(Education education);
     void disable(Education education);
     List<Education> findActiveEducationByUserId(int id);
+    List<Education> findMyActiveEducation();
 }

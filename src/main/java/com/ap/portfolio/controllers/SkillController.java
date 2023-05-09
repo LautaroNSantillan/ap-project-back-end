@@ -46,7 +46,7 @@ public class SkillController {
     }
 
     @PostMapping("/create-skill")
-    public ResponseEntity<?> createExp(@RequestBody SkillDTO skillDTO) {
+    public ResponseEntity<?> createSkill(@RequestBody SkillDTO skillDTO) {
         if (StringUtils.isBlank(skillDTO.getSkillName())) {
             return new ResponseEntity<>(new Message("Missing Skill Name"), HttpStatus.BAD_REQUEST);
         }
@@ -64,7 +64,7 @@ public class SkillController {
             return new ResponseEntity<>(new Message("Skill already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        Skill skill = new Skill(skillDTO.getSkillName(), skillDTO.getPercentage(), Utils.getCurrentUser(this.userService).getWebUser());
+        Skill skill = new Skill(skillDTO.getSkillName(), skillDTO.getPercentage(), skillDTO.getImgURL(),Utils.getCurrentUser(this.userService).getWebUser());
 
         skill.setUser(Utils.getCurrentUser(this.userService).getWebUser());
 
@@ -74,15 +74,17 @@ public class SkillController {
     }
 
     @PatchMapping("/update-skill/{id}")
-    public ResponseEntity<?> modifyExp(@PathVariable int id, @RequestBody SkillDTO skillDTO) {
+    public ResponseEntity<?> modifySkill(@PathVariable int id, @RequestBody SkillDTO skillDTO) {
+        try {
+            double percentage = Double.parseDouble(String.valueOf(skillDTO.getPercentage()));
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(new Message("Percentage must be a number"), HttpStatus.BAD_REQUEST);
+        }
         if (!this.skillService.existsById(id)) {
             return new ResponseEntity<>(new Message("Skill not found"), HttpStatus.BAD_REQUEST);
         }
         if (StringUtils.isBlank(skillDTO.getSkillName())) {
             return new ResponseEntity<>(new Message("Missing Skill Name"), HttpStatus.BAD_REQUEST);
-        }
-        if (Double.isNaN(skillDTO.getPercentage())) {
-            return new ResponseEntity<>(new Message("Percentage must be a number"), HttpStatus.BAD_REQUEST);
         }
         if (skillDTO.getPercentage() < 0) {
             return new ResponseEntity<>(new Message("Percentage must be a number between 0 and 100"), HttpStatus.BAD_REQUEST);
@@ -111,7 +113,7 @@ public class SkillController {
     }
 
     @PatchMapping("/disable-skill/{id}")
-    public ResponseEntity<?> disableExp(@PathVariable int id) {
+    public ResponseEntity<?> disableSkill(@PathVariable int id) {
         if (!this.skillService.existsById(id)) {
             return new ResponseEntity<>(new Message("Skill not found"), HttpStatus.BAD_REQUEST);
         }

@@ -55,7 +55,7 @@ public class ExperienceController {
             return new ResponseEntity<>(new Message("Experience already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        Experience exp = new Experience(experienceDTO.getExpName(), experienceDTO.getExpDescription());
+        Experience exp = new Experience(experienceDTO.getExpName(), experienceDTO.getExpDescription(), experienceDTO.getImgURL());
 
         //hacer servicio
         String authUserName = SecurityContextHolder.getContext().getAuthentication().getName();

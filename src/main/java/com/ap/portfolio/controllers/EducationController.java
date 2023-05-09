@@ -68,7 +68,7 @@ public class EducationController {
             return new ResponseEntity<>(new Message("Education already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        Education education = new Education(educationDTO.getEduName(), educationDTO.getEduDescription(), Utils.getCurrentUser(this.userService).getWebUser());
+        Education education = new Education(educationDTO.getEduName(), educationDTO.getEduDescription(), Utils.getCurrentUser(this.userService).getWebUser(), educationDTO.getImgURL());
 
         this.educationService.save(education);
 
@@ -77,12 +77,6 @@ public class EducationController {
 
     @PatchMapping("update-edu/{id}")
     public ResponseEntity<?> updateEdu(@PathVariable int id, @RequestBody EducationDTO educationDTO) {
-        if(StringUtils.isBlank(educationDTO.getEduName())){
-            return new ResponseEntity<>(new Message("Missing name"), HttpStatus.BAD_REQUEST);
-        }
-        if(StringUtils.isBlank(educationDTO.getEduDescription())){
-            return new ResponseEntity<>(new Message("Missing description"), HttpStatus.BAD_REQUEST);
-        }
         if(!this.educationService.existsById(id)){
             return new ResponseEntity<>(new Message("Education not found"), HttpStatus.BAD_REQUEST);
         }
@@ -92,10 +86,17 @@ public class EducationController {
 
         Education education = this.educationService.findById(id).get();
 
-        String oldEduName = educationDTO.getEduName();
+        if(StringUtils.isNotBlank(educationDTO.getEduName())){
+            education.setEduName(educationDTO.getEduName());
+        }
+        if(StringUtils.isNotBlank(educationDTO.getEduDescription())){
+            education.setEduDescription(educationDTO.getEduDescription());
+        }
+        if(StringUtils.isNotBlank(educationDTO.getImgURL())){
+            education.setImgURL(educationDTO.getImgURL());
+        }
 
-        education.setEduName(educationDTO.getEduName());
-        education.setEduDescription(educationDTO.getEduDescription());
+        String oldEduName = educationDTO.getEduName();
 
         this.educationService.save(education);
 

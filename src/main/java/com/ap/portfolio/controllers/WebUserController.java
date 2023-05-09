@@ -1,6 +1,7 @@
 package com.ap.portfolio.controllers;
 
 import com.ap.portfolio.dtos.ExperienceDTO;
+import com.ap.portfolio.dtos.MeDTO;
 import com.ap.portfolio.dtos.RegisterDTO;
 import com.ap.portfolio.dtos.WebUserDTO;
 import com.ap.portfolio.models.Experience;
@@ -8,6 +9,9 @@ import com.ap.portfolio.models.Skill;
 import com.ap.portfolio.models.WebUser;
 import com.ap.portfolio.security.controller.AuthController;
 import com.ap.portfolio.security.dtos.NewUser;
+import com.ap.portfolio.security.enums.RoleName;
+import com.ap.portfolio.security.roles.IUser;
+import com.ap.portfolio.security.roles.Role;
 import com.ap.portfolio.security.services.UserService;
 import com.ap.portfolio.services.WebUserService;
 import com.ap.portfolio.utilities.Message;
@@ -18,6 +22,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -43,9 +48,22 @@ public class WebUserController {
         WebUserDTO webUserDTO = new WebUserDTO((this.webUserService.getById(id).get()));
         return new ResponseEntity<>(webUserDTO, HttpStatus.OK);
     }
+    @GetMapping("get-me")
+    public ResponseEntity<?> getUser() {
+        MeDTO meDTO = new MeDTO(this.webUserService.getByEmail("launsantillan@gmail.com").get());
+        return new ResponseEntity<>(meDTO, HttpStatus.OK);
+    }
     @GetMapping("get-current-user-id")
     public ResponseEntity<Integer> getUserId(){
         return new ResponseEntity<>(Utils.getCurrentUser(this.userService).getWebUser().getId(), HttpStatus.OK);
+    }
+    @GetMapping("get-is-admin")
+    public ResponseEntity<?> getIsAdmin(){
+        IUser currentUser = Utils.getCurrentUser(this.userService);
+        boolean isAdmin = currentUser.getRoles().stream()
+                .map(Role::getRoleName)
+                .anyMatch(roleName -> roleName == RoleName.ROLE_ADMIN);
+        return new ResponseEntity<>(isAdmin, HttpStatus.OK);
     }
 
     @PostMapping("create-web-user")

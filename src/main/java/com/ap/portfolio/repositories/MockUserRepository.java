@@ -9,5 +9,4 @@ import java.util.Optional;
 @Repository
 public interface MockUserRepository extends JpaRepository <MockUser, Long>{
     Optional<MockUser> findById(long id);
-    Optional<MockUser> findByEmail(String email);
 }

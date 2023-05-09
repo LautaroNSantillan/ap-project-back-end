@@ -22,10 +22,6 @@ public class MockUserServiceImpl implements MockUserService {
         return this.webUserRepository.findById(id);
     }
     @Override
-    public Optional<MockUser> findByEmail(String email) {
-        return this.webUserRepository.findByEmail(email);
-    }
-    @Override
     public ResponseEntity<?> disableUser(long id) {
         Optional<MockUser> userToDisable = this.webUserRepository.findById(id);
         if (userToDisable.isEmpty()) {
@@ -41,7 +37,7 @@ public class MockUserServiceImpl implements MockUserService {
     }
     @Override
     public MockUser createUser(MockUserDTO mockUserDTO) {
-        return new MockUser(mockUserDTO.getName(), mockUserDTO.getLastName(), mockUserDTO.getEmail());
+        return new MockUser(mockUserDTO.getName(), mockUserDTO.getLastName(), mockUserDTO.getBirthdate());
     }
     @Override
     public ResponseEntity<?> register(MockUser user) {
@@ -64,5 +60,10 @@ public class MockUserServiceImpl implements MockUserService {
     @Override
     public void save(MockUser mockUser){
         this.webUserRepository.save(mockUser);
+    }
+
+    @Override
+    public void delete(MockUser mockUser) {
+        this.webUserRepository.delete(mockUser);
     }
 }

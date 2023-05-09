@@ -9,13 +9,17 @@ import javax.validation.constraints.NotBlank;
 
 @Getter @Setter @NoArgsConstructor
 public class SkillDTO {
+    int id;
     @NotBlank
     private String skillName;
     @NotBlank
     private double percentage;
+    private String imgURL;
 
     public SkillDTO(Skill skill) {
+        this.id=skill.getId();
         this.skillName = skill.getSkillName();
         this.percentage = skill.getPercentage();
+        this.imgURL=skill.getImgURL();
     }
 }

@@ -60,4 +60,9 @@ public class EducationServiceImpl implements EducationService {
     public List<Education> findActiveEducationByUserId(int id) {
         return this.educationRepository.findActiveEducationByUserId(id);
     }
+
+    @Override
+    public List<Education> findMyActiveEducation() {
+        return null;
+    }
 }

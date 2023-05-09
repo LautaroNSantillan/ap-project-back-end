@@ -44,6 +44,11 @@ public class WebUserServiceImpl implements WebUserService {
     }
 
     @Override
+    public Optional<WebUser> getByEmail(String email) {
+        return this.webUserRepository.findByEmail(email);
+    }
+
+    @Override
     public void save(WebUser webUser) {
         this.webUserRepository.save(webUser);
     }
