@@ -13,6 +13,7 @@ import com.ap.portfolio.security.services.RoleService;
 import com.ap.portfolio.security.services.UserService;
 import com.ap.portfolio.services.WebUserService;
 import com.ap.portfolio.utilities.Message;
+import com.ap.portfolio.utilities.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,31 +49,29 @@ public class AuthController {
     private WebUserService webUserService;
     @Transactional
     @PostMapping("register")
-    public ResponseEntity<?> newUser (@Valid @RequestBody NewUser newUser, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+    public ResponseEntity<?> newUser(@Valid @RequestBody NewUser newUser, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(new Message("Invalid Credentials"), HttpStatus.BAD_REQUEST);
         }
-        if(userService.existsByUsername(newUser.getUsername())){
+        if (userService.existsByUsername(newUser.getUsername())) {
             return new ResponseEntity<>(new Message("User already exists"), HttpStatus.BAD_REQUEST);
         }
-        IUser user = new IUser(newUser.getName(), newUser.getUsername(),passwordEncoder.encode(newUser.getPassword()));
-
+        IUser user = new IUser(newUser.getName(), newUser.getUsername(), passwordEncoder.encode(newUser.getPassword()));
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
-
-        if(newUser.getRoles().contains("ADMIN")){
+        if (newUser.getRoles().contains("ADMIN")) {
             roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
         }
-
         user.setRoles(roles);
-
         this.userService.save(user);
-
         return new ResponseEntity<>(new Message("User saved"), HttpStatus.CREATED);
     }
     @Transactional
     @PostMapping("login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginUser loginUser, BindingResult bindingResult){
+        if(!this.userService.existsByUsername(loginUser.getUsername())){
+            return new ResponseEntity<>(new Message("You are not registered."), HttpStatus.BAD_REQUEST);
+        }
         if(bindingResult.hasErrors()){
             return new ResponseEntity<>(new Message("Invalid Credentials"), HttpStatus.BAD_REQUEST);
         }

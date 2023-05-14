@@ -70,33 +70,41 @@ public class ExperienceController {
 
     @PatchMapping("/update-exp/{id}")
     public ResponseEntity<?> modifyExp (@PathVariable int id, @RequestBody ExperienceDTO experienceDTO){
+        StringBuilder sb = new StringBuilder().append("Modified: ");
+
         if(!this.experienceService.existstById(id)){
             return new ResponseEntity<>(new Message("Experience not found"), HttpStatus.BAD_REQUEST);
         }
-        if(StringUtils.isBlank(experienceDTO.getExpName())){
-            return new ResponseEntity<>(new Message("Missing Experience Name"), HttpStatus.BAD_REQUEST);
-        }
-        if(StringUtils.isBlank(experienceDTO.getExpDescription())){
-            return new ResponseEntity<>(new Message("Missing Experience Description"), HttpStatus.BAD_REQUEST);
-        }
+
         if(this.experienceService.existstByName(experienceDTO.getExpName())
                 && this.experienceService.findByName(experienceDTO.getExpName()).get().getId() ==id){
             return new ResponseEntity<>(new Message("Experience already exists"), HttpStatus.BAD_REQUEST);
         }
 
-        String oldExpName = this.experienceService.findById(id).get().getExpName();
-
         Experience exp = this.experienceService.findById(id).get();
+
+        if(StringUtils.isNotBlank(experienceDTO.getExpName())){
+            exp.setExpName(experienceDTO.getExpName());
+            sb.append("name, ");
+        }
+        if(StringUtils.isNotBlank(experienceDTO.getExpDescription())){
+            exp.setExpDescription(experienceDTO.getExpDescription());
+            sb.append("description, ");
+        }
+
+        String oldExpName = this.experienceService.findById(id).get().getExpName();
 
         exp.setExpName(experienceDTO.getExpName());
         exp.setExpDescription(experienceDTO.getExpDescription());
 
         this.experienceService.save(exp);
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("Experience ");
-        sb.append(oldExpName);
-        sb.append(" was modified");
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append(".");
+
+        if(sb.toString().equals("Modified.")){
+            sb.replace(0, sb.length(), "Nothing was modified.");
+        }
 
         return new ResponseEntity<>(new Message(sb.toString()), HttpStatus.OK);
     }

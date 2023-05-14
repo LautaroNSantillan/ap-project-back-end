@@ -84,22 +84,34 @@ public class EducationController {
             return new ResponseEntity<>(new Message("Education already exists"), HttpStatus.BAD_REQUEST);
         }
 
+        StringBuilder sb = new StringBuilder().append("Modified: ");
+
         Education education = this.educationService.findById(id).get();
 
         if(StringUtils.isNotBlank(educationDTO.getEduName())){
             education.setEduName(educationDTO.getEduName());
+            sb.append("name, ");
         }
         if(StringUtils.isNotBlank(educationDTO.getEduDescription())){
             education.setEduDescription(educationDTO.getEduDescription());
+            sb.append("description, ");
         }
         if(StringUtils.isNotBlank(educationDTO.getImgURL())){
             education.setImgURL(educationDTO.getImgURL());
+            sb.append("image, ");
+        }
+
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append(".");
+
+        if(sb.toString().equals("Modified.")){
+            sb.replace(0, sb.length(), "Nothing was modified.");
         }
 
         String oldEduName = educationDTO.getEduName();
 
         this.educationService.save(education);
 
-        return new ResponseEntity<>(new Message("Education "+ oldEduName+" was modified"), HttpStatus.OK);
+        return new ResponseEntity<>(new Message(sb.toString()), HttpStatus.OK);
     }
 }

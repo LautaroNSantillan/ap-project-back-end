@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/web-user")
-@CrossOrigin(origins = "https://portfoliotestfront.web.app")
 public class WebUserController {
     @Autowired
     private WebUserService webUserService;
@@ -72,6 +71,9 @@ public class WebUserController {
             return new ResponseEntity<>(new Message("Missing Name"),HttpStatus.BAD_REQUEST);
         }if(StringUtils.isBlank(registerDTO.getLastName())){
             return new ResponseEntity<>(new Message("Missing Name"),HttpStatus.BAD_REQUEST);
+        }
+        if (!Utils.isValidEmail(registerDTO.getEmail())) {
+            return new ResponseEntity<>(new Message("Invalid email address"), HttpStatus.BAD_REQUEST);
         }
         if(this.userService.existsByUsername(registerDTO.getUsername())){
             return new ResponseEntity<>(new Message("Username already in use"),HttpStatus.BAD_REQUEST);
@@ -118,7 +120,7 @@ public class WebUserController {
             if(this.webUserService.existsByEmail(webUserDTO.getEmail())){
                 return new ResponseEntity<>(new Message("Email already in use"), HttpStatus.BAD_REQUEST);
             }
-            webUser.setName(webUserDTO.getEmail());
+            webUser.setEmail(webUserDTO.getEmail());
             sb.append("email, ");
         }
         if(!StringUtils.isBlank(webUserDTO.getImg())&& !Objects.equals(webUser.getImg(), webUserDTO.getImg())){

@@ -83,33 +83,38 @@ public class SkillController {
         if (!this.skillService.existsById(id)) {
             return new ResponseEntity<>(new Message("Skill not found"), HttpStatus.BAD_REQUEST);
         }
-        if (StringUtils.isBlank(skillDTO.getSkillName())) {
-            return new ResponseEntity<>(new Message("Missing Skill Name"), HttpStatus.BAD_REQUEST);
-        }
-        if (skillDTO.getPercentage() < 0) {
-            return new ResponseEntity<>(new Message("Percentage must be a number between 0 and 100"), HttpStatus.BAD_REQUEST);
-        }
-        if (skillDTO.getPercentage() > 100) {
-            return new ResponseEntity<>(new Message("Percentage must be a number between 0 and 100"), HttpStatus.BAD_REQUEST);
-        }
-        if (this.skillService.existsBySkillName(skillDTO.getSkillName()) && this.skillService.findBySkillName(skillDTO.getSkillName()).get().getId() != id) {
-            return new ResponseEntity<>(new Message("Skill already exists"), HttpStatus.BAD_REQUEST);
-        }
 
-        String oldSkillName = this.skillService.findById(id).get().getSkillName();
+        StringBuilder sb = new StringBuilder().append("Modified: ");
 
         Skill skill = this.skillService.findById(id).get();
 
-        skill.setSkillName(skillDTO.getSkillName());
-        skill.setPercentage(skillDTO.getPercentage());
+        if (StringUtils.isNotBlank(skillDTO.getSkillName())) {
+            skill.setSkillName(skill.getSkillName());
+            sb.append("name, ");
+        }
+
+
+        if (skillDTO.getPercentage() < 0 || skillDTO.getPercentage() > 100) {
+            return new ResponseEntity<>(new Message("Percentage must be a number between 0 and 100"), HttpStatus.BAD_REQUEST);
+        } else if (this.skillService.existsBySkillName(skillDTO.getSkillName()) && this.skillService.findBySkillName(skillDTO.getSkillName()).get().getId() != id) {
+            return new ResponseEntity<>(new Message("Skill already exists"), HttpStatus.BAD_REQUEST);
+        } else {
+            skill.setPercentage(skillDTO.getPercentage());
+            sb.append("percentage, ");
+        }
+
+
+        sb.delete(sb.length() - 2, sb.length());
+        sb.append(".");
+
+        if(sb.toString().equals("Modified.")){
+            sb.replace(0, sb.length(), "Nothing was modified.");
+        }
 
         this.skillService.save(skill);
 
-        String sb = "Skill " +
-                oldSkillName +
-                " was modified";
 
-        return new ResponseEntity<>(new Message(sb), HttpStatus.OK);
+        return new ResponseEntity<>(new Message(sb.toString()), HttpStatus.OK);
     }
 
     @PatchMapping("/disable-skill/{id}")
