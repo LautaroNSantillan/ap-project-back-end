@@ -49,7 +49,7 @@ public class WebUserController {
     }
     @GetMapping("get-me")
     public ResponseEntity<?> getUser() {
-        MeDTO meDTO = new MeDTO(this.webUserService.getByEmail("launsantillan@gmail.com").get());
+        MeDTO meDTO = new MeDTO(this.webUserService.getByEmail("santillanlautaronahuel@gmail.com").get());
         return new ResponseEntity<>(meDTO, HttpStatus.OK);
     }
     @GetMapping("get-current-user-id")
