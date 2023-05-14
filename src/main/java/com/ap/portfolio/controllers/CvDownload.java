@@ -13,7 +13,7 @@ import java.io.*;
 public class CvDownload {
     @GetMapping("/download")
     public void downloadCv(HttpServletResponse response) throws IOException {
-            File cv = new File("src/main/java/com/ap/portfolio/utilities/cv/My cv  EN.pdf");
+            File cv = new File("src/main/java/com/ap/portfolio/utilities/cv/SantillanLautaroNahuelJrJavaDev.pdf");
 
         response.setContentType("application/octect-stream");
         String headerKey = "Content-Disposition";
