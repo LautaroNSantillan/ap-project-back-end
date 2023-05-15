@@ -2,6 +2,10 @@ package com.ap.portfolio;
 
 import com.ap.portfolio.models.MockUser;
 import com.ap.portfolio.repositories.MockUserRepository;
+import com.ap.portfolio.security.enums.RoleName;
+import com.ap.portfolio.security.repositories.IRoleRepository;
+import com.ap.portfolio.security.roles.Role;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -27,6 +31,8 @@ public class PortfolioApplication {
 	public RedirectStrategy redirectStrategy() {
 		return new DefaultRedirectStrategy();
 	}
+	@Autowired
+	private IRoleRepository iRoleRepository;
 
 	@Bean
 	public CommandLineRunner initData(MockUserRepository webUserRepository){
@@ -42,6 +48,13 @@ public class PortfolioApplication {
 		MockUser juan = new MockUser("Juan", "Perez",  LocalDate.now());
 
 		MockUser john = new MockUser("John", "Johnson", LocalDate.now());
+
+			Role admin = new Role(RoleName.ROLE_ADMIN);
+			Role user = new Role(RoleName.ROLE_USER);
+
+		//	this.iRoleRepository.save(admin);
+		//	this.iRoleRepository.save(user);
+
 //		webUserRepository.save(john);
 //		webUserRepository.save(juan);
 		};
