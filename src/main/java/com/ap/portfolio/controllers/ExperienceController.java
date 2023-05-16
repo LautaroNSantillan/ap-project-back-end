@@ -77,7 +77,7 @@ public class ExperienceController {
         }
 
         if(this.experienceService.existstByName(experienceDTO.getExpName())
-                && this.experienceService.findByName(experienceDTO.getExpName()).get().getId() ==id){
+                && this.experienceService.findByName(experienceDTO.getExpName()).get().getId() !=id){
             return new ResponseEntity<>(new Message("Experience already exists"), HttpStatus.BAD_REQUEST);
         }
 
