@@ -93,7 +93,6 @@ public class SkillController {
             sb.append("name, ");
         }
 
-
         if (skillDTO.getPercentage() < 0 || skillDTO.getPercentage() > 100) {
             return new ResponseEntity<>(new Message("Percentage must be a number between 0 and 100"), HttpStatus.BAD_REQUEST);
         } else if (this.skillService.existsBySkillName(skillDTO.getSkillName()) && this.skillService.findBySkillName(skillDTO.getSkillName()).get().getId() != id) {
@@ -101,6 +100,11 @@ public class SkillController {
         } else {
             skill.setPercentage(skillDTO.getPercentage());
             sb.append("percentage, ");
+        }
+
+        if(StringUtils.isNotBlank(skillDTO.getImgURL())){
+            skill.setImgURL(skillDTO.getImgURL());
+            sb.append("image, ");
         }
 
 
